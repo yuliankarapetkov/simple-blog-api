@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
+const checkAuth = require('../middleware/check-auth');
+
 const Category = require('../models/category');
 
 router.get('/', (req, res, next) => {
@@ -39,7 +41,7 @@ router.get('/:id', (req, res, next) => {
         })
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     const category = new Category({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -57,7 +59,7 @@ router.post('/', (req, res, next) => {
         });
 });
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', checkAuth, (req, res, next) => {
     const id = req.params.id;
     Category.update({ _id: id }, { $set: req.body })
         .then(() => {
@@ -70,7 +72,7 @@ router.put('/:id', (req, res, next) => {
         });
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', checkAuth, (req, res, next) => {
     const id = req.params.id;
     Category.findOneAndRemove({ _id: id })
         .exec()

@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-
 const mongoose = require('mongoose');
+
+const checkAuth = require('../middleware/check-auth');
 
 const Category = require('../models/category');
 const Article = require('../models/article');
@@ -40,7 +41,7 @@ router.get('/:id', (req, res, next) => {
         });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     const categoryid = req.body.categoryId;
 
     Category.findById(categoryid)
@@ -71,7 +72,7 @@ router.post('/', (req, res, next) => {
         });
 });
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', checkAuth, (req, res, next) => {
     const id = req.params.id;
 
     Article.update({ _id: id }, { $set: req.body })
@@ -85,7 +86,7 @@ router.put('/:id', (req, res, next) => {
         });
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', checkAuth, (req, res, next) => {
     const id = req.params.id;
 
     Article.findOneAndRemove({ _id: id })
