@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
 // Routes
+const authRoutes = require('./api/routes/auth');
 const categoriesRoute = require('./api/routes/categories');
 const articlesRoute = require('./api/routes/articles');
 
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 });
 
 // Routing Config
+app.use('/auth', authRoutes);
 app.use('/categories', categoriesRoute);
 app.use('/articles', articlesRoute);
 
